@@ -1,0 +1,24 @@
+{
+  "responses": [
+    {
+      "id": "strong_crs_answer",
+      "task_id": "qgis_crs_001",
+      "answer": "This is a good strategy. EPSG:2263 is a local projected CRS for New York Long Island, so editing and distance or area checks in Lower Manhattan are more reliable than doing those operations in WGS84. EPSG:4326 is appropriate for GeoJSON because web tools expect longitude and latitude. The project should document the CRS and export transformation in metadata."
+    },
+    {
+      "id": "weak_osm_answer",
+      "task_id": "qgis_osm_004",
+      "answer": "QuickOSM downloads the sidewalk and crossing data, so after export it can be treated as complete ground truth."
+    },
+    {
+      "id": "schema_mid_answer",
+      "task_id": "qgis_schema_005",
+      "answer": "Those fields help users know the source and whether a feature is trustworthy. Confidence is useful when labels are ambiguous, especially for AI training data."
+    },
+    {
+      "id": "review_strong_answer",
+      "task_id": "qgis_review_007",
+      "answer": "The answer is incomplete. A production QGIS workflow should choose official and OSM sources intentionally, set a CRS such as EPSG:2263 for local work, normalize the schema, run geometry and topology QA, mark confidence/review_status/qa_flag for uncertain features, and deliver documented outputs like a GeoPackage, GeoJSON exports, a QGIS project, and README notes."
+    }
+  ]
+}

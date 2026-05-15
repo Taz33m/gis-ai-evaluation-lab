@@ -1,0 +1,507 @@
+{
+  "tasks": [
+    {
+      "id": "qgis_crs_001",
+      "category": "CRS and export",
+      "prompt": "A QGIS project for Lower Manhattan uses EPSG:2263 for editing and EPSG:4326 for GeoJSON export. Evaluate whether this is a good CRS strategy.",
+      "max_score": 10,
+      "expected_concepts": [
+        {
+          "label": "local projected CRS for editing",
+          "terms": ["EPSG:2263", "projected CRS", "New York Long Island", "local projection"]
+        },
+        {
+          "label": "measurement accuracy",
+          "terms": ["measurement", "distance", "area", "accuracy", "feet"]
+        },
+        {
+          "label": "web/export interoperability",
+          "terms": ["EPSG:4326", "GeoJSON", "web", "longitude", "latitude", "interoperability"]
+        },
+        {
+          "label": "document transformations",
+          "terms": ["document", "transformation", "metadata", "CRS"]
+        }
+      ],
+      "red_flags": [
+        {
+          "label": "treats WGS84 as best for all editing",
+          "terms": ["always use EPSG:4326", "4326 is best for editing", "does not matter"]
+        },
+        {
+          "label": "ignores measurement implications",
+          "terms": ["same accuracy", "no difference for measurements"]
+        }
+      ]
+    },
+    {
+      "id": "qgis_geometry_002",
+      "category": "Geometry QA",
+      "prompt": "A clipped polygon layer has self-intersections before export. What should a QGIS workflow do before calling the data production-ready?",
+      "max_score": 10,
+      "expected_concepts": [
+        {
+          "label": "run geometry validation",
+          "terms": ["geometry validation", "Geometry Checker", "Check validity", "validate geometries"]
+        },
+        {
+          "label": "repair or manually inspect",
+          "terms": ["Fix geometries", "repair", "manual edit", "inspect"]
+        },
+        {
+          "label": "rerun validation after fixes",
+          "terms": ["rerun", "validate again", "after fixing", "confirm"]
+        },
+        {
+          "label": "avoid exporting known invalid data",
+          "terms": ["do not export", "before export", "invalid geometries", "production-ready"]
+        }
+      ],
+      "red_flags": [
+        {
+          "label": "exports without QA",
+          "terms": ["export anyway", "ignore", "not important"]
+        }
+      ]
+    },
+    {
+      "id": "qgis_topology_003",
+      "category": "Topology",
+      "prompt": "What topology checks would you run for a multi-layer urban asset package with roads, sidewalks, crosswalks, buildings, and land-use zones?",
+      "max_score": 10,
+      "expected_concepts": [
+        {
+          "label": "invalid geometry and duplicates",
+          "terms": ["invalid geometries", "duplicates", "duplicate geometries"]
+        },
+        {
+          "label": "polygon overlap/gap logic",
+          "terms": ["overlap", "gaps", "mutually exclusive", "land-use"]
+        },
+        {
+          "label": "network connectivity",
+          "terms": ["dangling", "connectivity", "snapping", "roads", "sidewalks"]
+        },
+        {
+          "label": "layer-specific rules",
+          "terms": ["layer-specific", "buildings", "crosswalks", "within", "intersections"]
+        }
+      ],
+      "red_flags": [
+        {
+          "label": "one-size-fits-all topology",
+          "terms": ["same rule for every layer", "only check invalid geometry"]
+        }
+      ]
+    },
+    {
+      "id": "qgis_osm_004",
+      "category": "OSM interpretation",
+      "prompt": "An AI says OSM sidewalk and crossing data can be treated as complete ground truth after a QuickOSM download. What reviewer feedback should it receive?",
+      "max_score": 10,
+      "expected_concepts": [
+        {
+          "label": "OSM completeness caveat",
+          "terms": ["incomplete", "coverage varies", "not complete", "OSM"]
+        },
+        {
+          "label": "human review against imagery or authoritative data",
+          "terms": ["imagery", "authoritative", "human review", "check"]
+        },
+        {
+          "label": "flag uncertain features",
+          "terms": ["confidence", "review_status", "qa_flag", "needs_review"]
+        },
+        {
+          "label": "QuickOSM is an input tool, not full QA",
+          "terms": ["QuickOSM", "input", "not enough", "download"]
+        }
+      ],
+      "red_flags": [
+        {
+          "label": "treats OSM as authoritative complete source",
+          "terms": ["complete ground truth", "authoritative", "done after QuickOSM"]
+        }
+      ]
+    },
+    {
+      "id": "qgis_schema_005",
+      "category": "Schema and provenance",
+      "prompt": "Why should a GIS asset package include confidence, review_status, qa_flag, source, and source_id instead of just labels?",
+      "max_score": 10,
+      "expected_concepts": [
+        {
+          "label": "provenance",
+          "terms": ["source", "source_id", "provenance", "trace"]
+        },
+        {
+          "label": "review workflow",
+          "terms": ["review_status", "human review", "needs_review", "review workflow"]
+        },
+        {
+          "label": "confidence and uncertainty",
+          "terms": ["confidence", "uncertainty", "ambiguous", "trust"]
+        },
+        {
+          "label": "downstream AI/data filtering",
+          "terms": ["AI", "downstream", "filter", "ground truth", "training"]
+        }
+      ],
+      "red_flags": [
+        {
+          "label": "labels-only schema",
+          "terms": ["labels are enough", "only labels", "no need for source"]
+        }
+      ]
+    },
+    {
+      "id": "qgis_export_006",
+      "category": "Packaging and exports",
+      "prompt": "Evaluate a deliverable plan that includes only shapefiles for a multi-layer QGIS portfolio package.",
+      "max_score": 10,
+      "expected_concepts": [
+        {
+          "label": "GeoPackage multi-layer packaging",
+          "terms": ["GeoPackage", "GPKG", "multi-layer", "QGIS"]
+        },
+        {
+          "label": "GeoJSON web sharing",
+          "terms": ["GeoJSON", "web", "share", "EPSG:4326"]
+        },
+        {
+          "label": "shapefile limitations",
+          "terms": ["shapefile", "field name", "multiple files", "limitations"]
+        },
+        {
+          "label": "include project and documentation",
+          "terms": ["QGIS project", ".qgz", "README", "documentation"]
+        }
+      ],
+      "red_flags": [
+        {
+          "label": "shapefile-only deliverable",
+          "terms": ["only shapefiles", "shapefile is enough"]
+        }
+      ]
+    },
+    {
+      "id": "qgis_review_007",
+      "category": "AI response review",
+      "prompt": "An AI answer says: 'Run QuickOSM, export shapefiles, and you are done.' Score and critique the answer for a QGIS production workflow.",
+      "max_score": 10,
+      "expected_concepts": [
+        {
+          "label": "source selection",
+          "terms": ["source", "official", "OSM", "authoritative"]
+        },
+        {
+          "label": "CRS handling",
+          "terms": ["CRS", "projection", "EPSG"]
+        },
+        {
+          "label": "geometry/topology validation",
+          "terms": ["geometry", "topology", "validate", "QA"]
+        },
+        {
+          "label": "schema and uncertainty",
+          "terms": ["schema", "confidence", "review_status", "qa_flag"]
+        },
+        {
+          "label": "documentation and exports",
+          "terms": ["documentation", "GeoPackage", "GeoJSON", "README"]
+        }
+      ],
+      "red_flags": [
+        {
+          "label": "approves incomplete workflow",
+          "terms": ["good answer", "answer is complete", "workflow is complete", "you are done"]
+        }
+      ]
+    },
+    {
+      "id": "qgis_crosswalk_008",
+      "category": "Feature ambiguity",
+      "prompt": "Some crosswalk assets come from OSM crossing nodes instead of curb-to-curb line geometries. How should they be represented in a training dataset?",
+      "max_score": 10,
+      "expected_concepts": [
+        {
+          "label": "approximate representation",
+          "terms": ["approximate", "node-derived", "not precise", "candidate"]
+        },
+        {
+          "label": "visible but flagged",
+          "terms": ["visible", "flag", "needs_review", "review"]
+        },
+        {
+          "label": "manual alignment before ground truth",
+          "terms": ["manual", "align", "imagery", "curb-to-curb", "ground truth"]
+        },
+        {
+          "label": "document source method",
+          "terms": ["source", "OSM node", "notes", "provenance"]
+        }
+      ],
+      "red_flags": [
+        {
+          "label": "treats point-derived crossings as precise",
+          "terms": ["precise line", "exact crosswalk", "ground truth immediately"]
+        }
+      ]
+    },
+    {
+      "id": "qgis_join_009",
+      "category": "Joins and attributes",
+      "prompt": "A parcel CSV join in QGIS produces many null joined fields. What should an AI answer recommend checking?",
+      "max_score": 10,
+      "expected_concepts": [
+        {"label": "join key compatibility", "terms": ["join key", "field type", "string", "integer", "matching field"]},
+        {"label": "format normalization", "terms": ["leading zeros", "trim", "case", "normalize"]},
+        {"label": "unmatched records inspection", "terms": ["unmatched", "null", "inspect", "join summary"]},
+        {"label": "preserve original data", "terms": ["backup", "original", "do not overwrite", "export copy"]}
+      ],
+      "red_flags": [
+        {"label": "blindly deletes null records", "terms": ["delete null", "remove all unmatched"]}
+      ]
+    },
+    {
+      "id": "qgis_spatial_join_010",
+      "category": "Spatial joins",
+      "prompt": "How should an AI explain choosing between a table join and a spatial join in QGIS?",
+      "max_score": 10,
+      "expected_concepts": [
+        {"label": "attribute key join", "terms": ["attribute", "key", "matching field", "table join"]},
+        {"label": "geometry relationship join", "terms": ["spatial join", "within", "intersects", "contains"]},
+        {"label": "CRS alignment", "terms": ["CRS", "same projection", "coordinate reference"]},
+        {"label": "one-to-many handling", "terms": ["one-to-many", "aggregate", "duplicate", "summary"]}
+      ],
+      "red_flags": [
+        {"label": "uses spatial join for every join", "terms": ["always use spatial join", "spatial join is always better"]}
+      ]
+    },
+    {
+      "id": "qgis_fieldcalc_011",
+      "category": "Field calculator",
+      "prompt": "An AI suggests calculating polygon area in a layer stored as EPSG:4326 using $area. What feedback should a reviewer give?",
+      "max_score": 10,
+      "expected_concepts": [
+        {"label": "projection matters for area", "terms": ["projected CRS", "area", "measurement", "EPSG:4326"]},
+        {"label": "reproject or transform", "terms": ["reproject", "transform", "local CRS", "equal area"]},
+        {"label": "units awareness", "terms": ["units", "square feet", "square meters", "degrees"]},
+        {"label": "document calculation method", "terms": ["document", "field calculator", "method", "metadata"]}
+      ],
+      "red_flags": [
+        {"label": "area in degrees accepted", "terms": ["degrees are fine", "4326 area is accurate"]}
+      ]
+    },
+    {
+      "id": "qgis_raster_012",
+      "category": "Raster/vector reasoning",
+      "prompt": "A task asks for building footprints from aerial imagery. What should an evaluator expect beyond a simple raster screenshot?",
+      "max_score": 10,
+      "expected_concepts": [
+        {"label": "digitized vector output", "terms": ["vector", "digitize", "polygon", "footprint"]},
+        {"label": "georeferencing/CRS", "terms": ["georeference", "CRS", "projection", "orthorectified"]},
+        {"label": "QA against imagery", "terms": ["imagery", "inspect", "edge", "accuracy"]},
+        {"label": "attribute schema", "terms": ["attribute", "schema", "source", "confidence"]}
+      ],
+      "red_flags": [
+        {"label": "screenshot-only deliverable", "terms": ["screenshot is enough", "just provide image"]}
+      ]
+    },
+    {
+      "id": "qgis_layout_013",
+      "category": "Map layout",
+      "prompt": "What should a reviewer look for in a QGIS print layout exported as a final map PDF?",
+      "max_score": 10,
+      "expected_concepts": [
+        {"label": "legend and scale", "terms": ["legend", "scale bar", "north arrow"]},
+        {"label": "title and source", "terms": ["title", "source", "attribution", "date"]},
+        {"label": "readability", "terms": ["readable", "labels", "contrast", "symbol"]},
+        {"label": "export quality", "terms": ["PDF", "resolution", "layout", "extent"]}
+      ],
+      "red_flags": [
+        {"label": "map without attribution", "terms": ["no source needed", "omit attribution"]}
+      ]
+    },
+    {
+      "id": "qgis_processing_014",
+      "category": "Processing workflow",
+      "prompt": "How should an AI describe a reproducible QGIS processing workflow for clipping, fixing, and exporting layers?",
+      "max_score": 10,
+      "expected_concepts": [
+        {"label": "ordered processing steps", "terms": ["clip", "fix geometries", "export", "sequence"]},
+        {"label": "parameters and inputs", "terms": ["parameters", "input", "output", "ROI"]},
+        {"label": "model/script reproducibility", "terms": ["Processing Modeler", "script", "reproducible", "rerun"]},
+        {"label": "validation after processing", "terms": ["validate", "QA", "check", "after"]}
+      ],
+      "red_flags": [
+        {"label": "manual-only opaque workflow", "terms": ["just do it manually", "no need to document"]}
+      ]
+    },
+    {
+      "id": "qgis_license_015",
+      "category": "Licensing and attribution",
+      "prompt": "A portfolio dataset includes OSM-derived layers and official building footprints. What licensing/source notes should be included?",
+      "max_score": 10,
+      "expected_concepts": [
+        {"label": "OSM attribution/ODbL", "terms": ["OSM", "OpenStreetMap", "ODbL", "attribution"]},
+        {"label": "official source citation", "terms": ["official", "source", "URL", "provider"]},
+        {"label": "derived data caveat", "terms": ["derived", "license", "redistribute", "obligations"]},
+        {"label": "limitations", "terms": ["limitations", "not authoritative", "coverage", "manual"]}
+      ],
+      "red_flags": [
+        {"label": "ignores licensing", "terms": ["no attribution", "licenses do not matter"]}
+      ]
+    },
+    {
+      "id": "qgis_metadata_016",
+      "category": "Metadata",
+      "prompt": "What metadata should be present before sharing a GeoPackage as a portfolio artifact?",
+      "max_score": 10,
+      "expected_concepts": [
+        {"label": "CRS and dates", "terms": ["CRS", "date", "last_updated", "generated"]},
+        {"label": "sources", "terms": ["source", "provider", "source_id", "URL"]},
+        {"label": "schema documentation", "terms": ["schema", "data dictionary", "fields", "attributes"]},
+        {"label": "limitations and QA", "terms": ["limitations", "QA", "review", "known issues"]}
+      ],
+      "red_flags": [
+        {"label": "shares data without metadata", "terms": ["metadata is optional", "no documentation needed"]}
+      ]
+    },
+    {
+      "id": "qgis_buffer_017",
+      "category": "Geoprocessing",
+      "prompt": "An AI buffers points in EPSG:4326 by 100 and says the result is a 100-meter buffer. How should this be evaluated?",
+      "max_score": 10,
+      "expected_concepts": [
+        {"label": "units problem", "terms": ["degrees", "units", "not meters", "EPSG:4326"]},
+        {"label": "projected CRS required", "terms": ["projected CRS", "reproject", "local projection"]},
+        {"label": "buffer distance verification", "terms": ["100 meters", "distance", "verify", "measure"]},
+        {"label": "document method", "terms": ["document", "processing", "parameters", "method"]}
+      ],
+      "red_flags": [
+        {"label": "claims degree buffer is meters", "terms": ["100 degree", "4326 buffer is meters", "correct as is"]}
+      ]
+    },
+    {
+      "id": "qgis_dissolve_018",
+      "category": "Geoprocessing",
+      "prompt": "When dissolving park polygons by type, what risks should an AI answer mention?",
+      "max_score": 10,
+      "expected_concepts": [
+        {"label": "attribute choice", "terms": ["attribute", "type", "dissolve field", "classification"]},
+        {"label": "multipart geometry", "terms": ["multipart", "singlepart", "geometry"]},
+        {"label": "boundary/topology effects", "terms": ["boundaries", "overlap", "gaps", "topology"]},
+        {"label": "preserve source fields", "terms": ["preserve", "source", "aggregate", "lost fields"]}
+      ],
+      "red_flags": [
+        {"label": "dissolve without field awareness", "terms": ["dissolve everything", "field does not matter"]}
+      ]
+    },
+    {
+      "id": "qgis_symbology_019",
+      "category": "Symbology",
+      "prompt": "How should an evaluator judge an AI answer about styling QA issue points in QGIS?",
+      "max_score": 10,
+      "expected_concepts": [
+        {"label": "severity categories", "terms": ["severity", "categorized", "issue_type", "priority"]},
+        {"label": "visual contrast", "terms": ["contrast", "visible", "symbol", "color"]},
+        {"label": "labels/popups", "terms": ["label", "tooltip", "popup", "notes"]},
+        {"label": "not just aesthetic", "terms": ["QA", "review", "workflow", "inspect"]}
+      ],
+      "red_flags": [
+        {"label": "purely decorative styling", "terms": ["make it pretty", "colors only"]}
+      ]
+    },
+    {
+      "id": "qgis_layer_paths_020",
+      "category": "Packaging",
+      "prompt": "A shared QGIS project opens with broken layers on another machine. What should the answer recommend?",
+      "max_score": 10,
+      "expected_concepts": [
+        {"label": "relative paths", "terms": ["relative paths", "project home", "path"]},
+        {"label": "package data with project", "terms": ["GeoPackage", "data folder", "bundle", "same repository"]},
+        {"label": "repair data sources", "terms": ["repair", "set data source", "broken layers"]},
+        {"label": "test on clean checkout", "terms": ["clean checkout", "another machine", "test", "open"]}
+      ],
+      "red_flags": [
+        {"label": "absolute local path dependency", "terms": ["use /Users", "hard-code local path"]}
+      ]
+    },
+    {
+      "id": "qgis_sampling_021",
+      "category": "AI training data",
+      "prompt": "How should a reviewer evaluate sampling features for an AI geospatial training batch?",
+      "max_score": 10,
+      "expected_concepts": [
+        {"label": "representative coverage", "terms": ["representative", "coverage", "sample", "classes"]},
+        {"label": "avoid leakage/bias", "terms": ["bias", "leakage", "overrepresent", "edge cases"]},
+        {"label": "review status filter", "terms": ["review_status", "confidence", "qa_flag", "ground truth"]},
+        {"label": "document sampling method", "terms": ["document", "method", "random", "stratified"]}
+      ],
+      "red_flags": [
+        {"label": "uses all uncertain data as truth", "terms": ["use every feature as ground truth", "ignore review status"]}
+      ]
+    },
+    {
+      "id": "qgis_feedback_022",
+      "category": "Reviewer communication",
+      "prompt": "What makes written feedback on a bad GIS AI answer useful to the model or worker?",
+      "max_score": 10,
+      "expected_concepts": [
+        {"label": "specific missing steps", "terms": ["specific", "missing", "steps", "workflow"]},
+        {"label": "risk explanation", "terms": ["risk", "why", "consequence", "misleading"]},
+        {"label": "corrective guidance", "terms": ["should include", "revise", "recommend", "fix"]},
+        {"label": "evidence-based", "terms": ["evidence", "source", "QGIS", "layer"]}
+      ],
+      "red_flags": [
+        {"label": "generic feedback", "terms": ["be better", "good job", "try harder"]}
+      ]
+    },
+    {
+      "id": "qgis_modelbuilder_023",
+      "category": "Automation",
+      "prompt": "When should a QGIS Model Builder or Python processing script be preferred over manual clicks?",
+      "max_score": 10,
+      "expected_concepts": [
+        {"label": "repeatable workflow", "terms": ["repeatable", "reproducible", "rerun"]},
+        {"label": "many layers/features", "terms": ["batch", "many layers", "multiple files"]},
+        {"label": "parameterized process", "terms": ["parameters", "inputs", "outputs"]},
+        {"label": "auditability", "terms": ["audit", "document", "log", "review"]}
+      ],
+      "red_flags": [
+        {"label": "manual clicks for repeatable process", "terms": ["manual clicks are fine for everything", "no need to automate"]}
+      ]
+    },
+    {
+      "id": "qgis_extent_024",
+      "category": "Spatial filtering",
+      "prompt": "What should an evaluator expect when an AI describes clipping source data to a study-area ROI?",
+      "max_score": 10,
+      "expected_concepts": [
+        {"label": "defined ROI layer", "terms": ["ROI", "study area", "boundary", "clip layer"]},
+        {"label": "CRS compatibility", "terms": ["CRS", "same projection", "reproject"]},
+        {"label": "post-clip validation", "terms": ["validate", "geometry", "after clipping"]},
+        {"label": "source preservation", "terms": ["source_id", "source", "raw data", "manifest"]}
+      ],
+      "red_flags": [
+        {"label": "clips without preserving provenance", "terms": ["discard source ids", "source does not matter"]}
+      ]
+    },
+    {
+      "id": "qgis_poi_025",
+      "category": "POI normalization",
+      "prompt": "A polygon POI is converted to a point for a lightweight web export. What should the AI answer mention?",
+      "max_score": 10,
+      "expected_concepts": [
+        {"label": "representative point method", "terms": ["representative point", "centroid", "point on surface", "interior"]},
+        {"label": "geometry simplification caveat", "terms": ["simplification", "lost geometry", "polygon", "caveat"]},
+        {"label": "source/provenance retained", "terms": ["source", "source_id", "provenance", "original"]},
+        {"label": "fit for purpose", "terms": ["web", "inspection", "lightweight", "not boundary"]}
+      ],
+      "red_flags": [
+        {"label": "treats point as original boundary", "terms": ["same as polygon", "exact boundary preserved"]}
+      ]
+    }
+  ]
+}

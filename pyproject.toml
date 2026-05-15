@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gis-ai-evaluation-lab"
+version = "0.1.0"
+description = "Deterministic evaluation toolkit for QGIS and geospatial AI trainer workflows."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Tazeem Mahashin" }]
+dependencies = []
+
+[project.scripts]
+gis-ai-eval = "gis_ai_evaluation_lab.cli:main"
