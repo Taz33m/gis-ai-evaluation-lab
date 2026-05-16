@@ -1,10 +1,12 @@
 # GIS AI Evaluation Lab
 
-Flagship portfolio project for evaluating AI answers to practical QGIS and geospatial data workflows.
+Deterministic evaluator toolkit for QGIS and geospatial AI trainer workflows.
 
 This repo is built for GIS AI trainer/evaluator work: writing geospatial prompts, defining gold-standard expectations, spotting flawed AI reasoning, and giving clear reviewer feedback. It pairs with the companion QGIS asset project:
 
 <https://github.com/Taz33m/qgis-ai-geospatial-assets>
+
+The companion asset repo provides the actual Lower Manhattan spatial data surface used for realistic evaluation examples.
 
 ## Why This Exists
 
@@ -12,9 +14,16 @@ Many AI answers to GIS questions sound confident while skipping the details that
 
 It is not a benchmark of model intelligence. It is a reviewer toolkit for deciding whether an AI answer is useful, incomplete, risky, or wrong in real QGIS workflows.
 
+## Example Review Task
+
+An AI answer says to export NYC road data directly to GeoJSON without checking CRS, geometry validity, topology, source/license constraints, or review flags. Grade the answer and identify the missing GIS review steps.
+
+Expected review focus: the answer should mention working CRS vs export CRS, geometry validation, source/license attribution, schema/provenance preservation, and whether features need human review before being treated as ground truth.
+
 ## What Is Included
 
 - A structured task bank with QGIS/GIS prompts, expected answer points, red flags, and scoring focus.
+- Expected answer points and red flags for each task.
 - A scoring rubric for CRS, geometry QA, topology, schema/provenance, exports, and AI response review.
 - A failure taxonomy for common GIS AI mistakes.
 - Reviewer feedback examples showing how to critique weak answers.
