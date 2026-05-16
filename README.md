@@ -19,6 +19,7 @@ It is not a benchmark of model intelligence. It is a reviewer toolkit for decidi
 - A failure taxonomy for common GIS AI mistakes.
 - Reviewer feedback examples showing how to critique weak answers.
 - A deterministic grading CLI for sample responses.
+- A QGIS-ready GeoPackage and `.qgz` project so tasks can be inspected in the actual QGIS application.
 - Unit tests for the scoring behavior.
 
 ## Quick Start
@@ -32,6 +33,33 @@ python -m unittest discover -s tests
 ```
 
 No API keys are required. The grader is intentionally deterministic so the repo can be reviewed, tested, and run offline.
+
+## QGIS Package
+
+Open this file in QGIS:
+
+```text
+qgis/gis_ai_evaluation_lab.qgz
+```
+
+It loads:
+
+- `Evaluation Task Anchors`: 25 spatial task markers grouped by evaluation category.
+- `Evaluation Tasks`: prompt/category/max-score table.
+- `Expected Concepts`: gold-standard concepts and keyword evidence.
+- `Red Flags`: risky answer patterns reviewers should penalize.
+- `Sample AI Responses`: example answers for grading demonstrations.
+
+Regenerate the QGIS package with:
+
+```bash
+export PROJ_LIB=/Applications/QGIS.app/Contents/Resources/qgis/proj
+export PROJ_DATA=/Applications/QGIS.app/Contents/Resources/qgis/proj
+export GDAL_DATA=/Applications/QGIS.app/Contents/Resources/qgis/gdal
+export QGIS_PREFIX_PATH=/Applications/QGIS.app/Contents/MacOS
+
+/Applications/QGIS.app/Contents/MacOS/python scripts/build_qgis_package.py
+```
 
 ## Example
 
@@ -54,6 +82,7 @@ The CLI emits a concise reviewer report with:
 
 ```text
 data/
+  processed/gis_ai_evaluation_lab.gpkg
   task_bank.json
   sample_ai_responses.json
 docs/
@@ -63,6 +92,8 @@ docs/
 src/gis_ai_evaluation_lab/
   evaluator.py
   cli.py
+qgis/
+  gis_ai_evaluation_lab.qgz
 tests/
   test_evaluator.py
 ```
